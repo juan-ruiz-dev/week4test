@@ -1,7 +1,29 @@
 const complimentBtn = document.getElementById("complimentButton")
 const fortuneBtn = document.getElementById("fortuneBtn")
 const gameBtn = document.getElementById("whatGame")
-const quoteBtn = document.getElementById("#quoteBtn")
+const quoteBtn = document.getElementById("quoteBtn")
+
+
+const quotesCallback = ({ data: quotes }) => {
+    displayQuotes(quotes)
+    
+    console.log('happy callback hit')
+    }
+const errCallback = err => console.log(err)
+
+const getQuotes = () => {
+    axios.get('http://localhost:4000')
+        .then(quotesCallback)
+        .catch(errCallback)
+}
+
+const createQuotes = (body) => {
+    axios.post('http://localhost:4000/api/quote', body)
+        .then(quotesCallback)
+        .catch(errCallback)
+}
+
+
 
 const getCompliment = () => {
     axios.get("http://localhost:4000/api/compliment/")
@@ -28,16 +50,24 @@ const getGame = () => {
 };
 
 function submitHandler(e) {
-    e.preventDefault();
-    let quote = document.querySelector("quoteBtn")
+    e.preventDefault()
+    let quote = document.querySelector('#quote')
+
     let bodyObj = {
-        quote: quote.value
+        quote
     }
-    console.log(quote.value)
-    quote.value = ''
+
+    createQuotes(bodyObj)
+    
 }
+
+function displayQuotes(arr) {
+    console.log('hit display quotes')
+    console.log(arr)
+   
+}
+
 complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', getFortune)
 gameBtn.addEventListener('click', getGame)
-
-quoteBtn.addEventListener('submit', createQuote)
+quoteBtn.addEventListener('submit', submitHandler)

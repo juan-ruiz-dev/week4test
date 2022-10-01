@@ -1,4 +1,7 @@
+const quotes = require("./db.json")
+let globalId = 2
 module.exports = {
+
 
     getCompliment: (req, res) => {
         const compliments = ["Gee, you're a smart cookie!", "Cool shirt!", "Your Javascript skills are stellar."];
@@ -26,16 +29,18 @@ module.exports = {
         res.status(200).send(randomGame)
 
     },
-
-
-
     createQuote : (req, res) => {
         const {quote} = req.body
         let newQuote = {
-         
+            id:globalId,
+            quote
         }
-        console.log(newQuote)
-        res.status(200).send(quote)
-    }
+        quotes.push(newQuote)
+        res.status(200).send(quotes)
+        globalId++
+}
+
+
+
 
 }
